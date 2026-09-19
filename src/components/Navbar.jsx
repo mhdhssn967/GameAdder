@@ -2,7 +2,7 @@ import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { signOut } from 'firebase/auth';
 import { auth } from '../firebase';
-import { LogOut, PlusCircle, Gamepad2 } from 'lucide-react';
+import { Plus, UserCircle, Gamepad2, LogOut } from 'lucide-react';
 
 export default function Navbar({ user }) {
   const navigate = useNavigate();
@@ -17,22 +17,36 @@ export default function Navbar({ user }) {
   };
 
   return (
-    <nav className="navbar glass">
-      <Link to="/" className="navbar-brand flex-center" style={{ gap: '8px' }}>
-        <Gamepad2 size={28} color="var(--primary-color)" />
-        GameFaktory
+    <nav className="navbar">
+      <Link to="/" className="navbar-brand">
+        <Gamepad2 size={24} />
+        <span style={{ fontWeight: 700, letterSpacing: '-0.5px' }}>GameFaktory</span>
       </Link>
-      <div style={{ display: 'flex', gap: '16px', alignItems: 'center' }}>
-        <span style={{ opacity: 0.8, fontSize: '0.9rem' }}>
-          Hello, <strong>{user?.displayName || 'Gamer'}</strong>
-        </span>
-        <Link to="/add-game" className="btn btn-secondary" style={{ padding: '8px 16px', fontSize: '0.9rem' }}>
-          <PlusCircle size={18} /> Add Game
+      
+      <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
+        <Link to="/add-game" className="btn btn-secondary" style={{ padding: '8px 12px', gap: '4px' }}>
+          <Plus size={18} />
+          <span className="hide-on-mobile">Add</span>
         </Link>
-        <button onClick={handleLogout} className="btn" style={{ padding: '8px 16px', fontSize: '0.9rem', background: 'var(--card-border)' }}>
-          <LogOut size={18} /> Logout
-        </button>
+        
+        <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginLeft: '8px', borderLeft: '1px solid var(--border-color)', paddingLeft: '16px' }}>
+          <div className="hide-on-mobile" style={{ display: 'flex', alignItems: 'center', gap: '6px', color: 'var(--text-secondary)', fontSize: '0.875rem' }}>
+            <UserCircle size={18} />
+            <span style={{ fontWeight: 500, color: 'var(--text-primary)' }}>
+              {user?.displayName || 'User'}
+            </span>
+          </div>
+          <button onClick={handleLogout} className="btn btn-secondary" style={{ padding: '8px', border: 'none' }} title="Logout">
+            <LogOut size={20} color="var(--text-secondary)" />
+          </button>
+        </div>
       </div>
+      
+      <style dangerouslySetInnerHTML={{__html: `
+        @media (max-width: 600px) {
+          .hide-on-mobile { display: none !important; }
+        }
+      `}} />
     </nav>
   );
 }

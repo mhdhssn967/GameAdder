@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword, updateProfile } from 'firebase/auth';
 import { auth } from '../firebase';
-import { Gamepad2, Mail, Lock, User } from 'lucide-react';
+import { Gamepad2 } from 'lucide-react';
 
 export default function Auth() {
   const [isLogin, setIsLogin] = useState(true);
@@ -32,31 +32,31 @@ export default function Auth() {
   };
 
   return (
-    <div className="flex-center" style={{ height: '100vh' }}>
-      <div className="glass animate-fade-in" style={{ width: '100%', maxWidth: '400px', padding: '40px' }}>
-        <div className="flex-center" style={{ flexDirection: 'column', marginBottom: '32px' }}>
-          <Gamepad2 size={48} color="var(--primary-color)" style={{ marginBottom: '16px' }} />
-          <h2 style={{ fontSize: '2rem', marginBottom: '8px' }}>GameFaktory</h2>
-          <p style={{ color: 'var(--text-color)', opacity: 0.7 }}>
-            {isLogin ? 'Welcome back, gamer!' : 'Join the factory today.'}
+    <div className="flex-center" style={{ minHeight: '80vh', padding: '24px 16px' }}>
+      <div className="card animate-fade-in" style={{ width: '100%', maxWidth: '400px', padding: '32px 24px' }}>
+        <div style={{ textAlign: 'center', marginBottom: '32px' }}>
+          <Gamepad2 size={40} color="var(--primary-color)" style={{ marginBottom: '16px' }} />
+          <h2 style={{ fontSize: '1.5rem', fontWeight: 500, color: 'var(--text-primary)', marginBottom: '8px' }}>
+            {isLogin ? 'Sign in' : 'Create account'}
+          </h2>
+          <p style={{ color: 'var(--text-secondary)', fontSize: '0.95rem' }}>
+            Continue to GameFaktory
           </p>
         </div>
 
         {error && (
-          <div style={{ background: 'rgba(239, 68, 68, 0.1)', color: '#ef4444', padding: '12px', borderRadius: '8px', marginBottom: '16px', fontSize: '0.9rem' }}>
+          <div style={{ background: '#fce8e6', color: '#c5221f', padding: '12px', borderRadius: '4px', marginBottom: '24px', fontSize: '0.875rem' }}>
             {error}
           </div>
         )}
 
-        <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+        <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
           {!isLogin && (
-            <div style={{ position: 'relative' }}>
-              <User size={18} style={{ position: 'absolute', top: '14px', left: '16px', opacity: 0.5 }} />
+            <div>
+              <label className="input-label">Name</label>
               <input 
                 type="text" 
-                placeholder="Your Name" 
                 className="input-field" 
-                style={{ paddingLeft: '44px' }}
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 required={!isLogin}
@@ -64,47 +64,41 @@ export default function Auth() {
             </div>
           )}
           
-          <div style={{ position: 'relative' }}>
-            <Mail size={18} style={{ position: 'absolute', top: '14px', left: '16px', opacity: 0.5 }} />
+          <div>
+            <label className="input-label">Email</label>
             <input 
               type="email" 
-              placeholder="Email Address" 
               className="input-field" 
-              style={{ paddingLeft: '44px' }}
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
             />
           </div>
 
-          <div style={{ position: 'relative' }}>
-            <Lock size={18} style={{ position: 'absolute', top: '14px', left: '16px', opacity: 0.5 }} />
+          <div>
+            <label className="input-label">Password</label>
             <input 
               type="password" 
-              placeholder="Password" 
               className="input-field" 
-              style={{ paddingLeft: '44px' }}
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
             />
           </div>
 
-          <button type="submit" className="btn" style={{ marginTop: '8px' }} disabled={loading}>
-            {loading ? 'Processing...' : isLogin ? 'Sign In' : 'Create Account'}
-          </button>
+          <div style={{ marginTop: '16px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            <button 
+              type="button" 
+              onClick={() => setIsLogin(!isLogin)} 
+              style={{ background: 'none', border: 'none', color: 'var(--primary-color)', cursor: 'pointer', fontWeight: 500, fontSize: '0.875rem', padding: '8px 0' }}
+            >
+              {isLogin ? 'Create account' : 'Sign in instead'}
+            </button>
+            <button type="submit" className="btn" disabled={loading}>
+              {loading ? 'Wait...' : 'Next'}
+            </button>
+          </div>
         </form>
-
-        <div style={{ textAlign: 'center', marginTop: '24px', fontSize: '0.9rem', opacity: 0.8 }}>
-          {isLogin ? "Don't have an account? " : "Already have an account? "}
-          <button 
-            type="button" 
-            onClick={() => setIsLogin(!isLogin)} 
-            style={{ background: 'none', border: 'none', color: 'var(--primary-color)', cursor: 'pointer', fontWeight: 600, fontSize: '0.9rem' }}
-          >
-            {isLogin ? 'Sign Up' : 'Sign In'}
-          </button>
-        </div>
       </div>
     </div>
   );
